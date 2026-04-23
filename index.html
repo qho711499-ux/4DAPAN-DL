@@ -1,91 +1,92 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ôn Tập Địa Lí 10 - Review Đáp Án</title>
+    <title>Ôn Tập Địa Lí 10 - 68 Câu Trắc Nghiệm</title>
     <style>
         :root {
-            --primary-color: #2e7d32;
-            --error-color: #c62828;
-            --correct-bg: #e8f5e9;
-            --wrong-bg: #ffebee;
-            --bg-color: #f0f2f5;
+            --primary: #1a73e8;
+            --correct: #2e7d32;
+            --wrong: #d93025;
+            --bg: #f8f9fa;
         }
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
             margin: 0; padding: 20px;
-            color: #333;
+            line-height: 1.6;
         }
         .container {
-            max-width: 850px;
+            max-width: 900px;
             margin: 0 auto;
             background: #fff;
-            padding: 30px;
+            padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
-        h1 { text-align: center; color: var(--primary-color); }
+        h1 { text-align: center; color: var(--primary); margin-bottom: 40px; text-transform: uppercase; }
         
         .question-item {
-            margin-bottom: 25px;
-            padding: 15px;
-            border: 1px solid #ddd;
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
+            transition: 0.3s;
         }
-        .q-text { font-weight: bold; display: block; margin-bottom: 12px; }
+        .q-text { font-weight: 600; font-size: 1.1em; display: block; margin-bottom: 15px; color: #3c4043; }
         
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 15px;
         }
         @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
 
         .option-label {
-            padding: 10px;
-            border: 1px solid #eee;
+            padding: 12px 15px;
+            border: 1px solid #dadce0;
             border-radius: 6px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            transition: 0.3s;
+            background: #fff;
         }
-        .option-label:hover { background-color: #f8f8f8; }
+        .option-label:hover { background-color: #f1f3f4; }
         
-        /* Hiệu ứng đúng/sai */
+        /* Màu sắc khi nộp bài */
         .is-correct { 
-            background-color: var(--correct-bg) !important; 
-            border-color: var(--primary-color) !important;
+            background-color: #e6f4ea !important; 
+            border-color: var(--correct) !important;
+            color: var(--correct);
             font-weight: bold;
-            color: var(--primary-color);
         }
         .is-wrong { 
-            background-color: var(--wrong-bg) !important; 
-            border-color: var(--error-color) !important;
-            color: var(--error-color);
+            background-color: #fce8e6 !important; 
+            border-color: var(--wrong) !important;
+            color: var(--wrong);
         }
 
-        .sticky-footer {
+        .action-bar {
             position: sticky; bottom: 0;
-            background: white; padding: 15px;
-            text-align: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            margin-top: 30px;
+            background: white; padding: 20px;
+            text-align: center; box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+            margin-top: 50px; border-top: 1px solid #eee;
         }
         button {
-            background-color: var(--primary-color);
+            background-color: var(--primary);
             color: white; border: none;
-            padding: 12px 35px; border-radius: 25px;
-            font-size: 1.1em; cursor: pointer; font-weight: bold;
+            padding: 15px 45px; border-radius: 30px;
+            font-size: 1.1em; cursor: pointer; font-weight: 600;
+            transition: 0.3s;
         }
-        button:disabled { background-color: #ccc; }
+        button:hover { background-color: #1557b0; transform: translateY(-2px); }
 
         #result-popup {
             display: none; position: fixed;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: white; padding: 30px; border-radius: 15px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.4); z-index: 1000; text-align: center;
+            background: white; padding: 40px; border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 1000; text-align: center;
         }
         .overlay {
             display: none; position: fixed;
@@ -97,106 +98,106 @@
 <body>
 
 <div class="container">
-    <h1>BÀI ÔN TẬP ĐỊA LÍ (68 CÂU)</h1>
-    <div id="quiz-content"></div>
+    <h1>BÀI ÔN TẬP ĐỊA LÍ 10</h1>
+    <div id="quiz-box"></div>
 </div>
 
-<div class="sticky-footer">
-    <button id="submit-btn" onclick="submitQuiz()">NỘP BÀI XEM ĐÁP ÁN</button>
-    <button id="retry-btn" onclick="location.reload()" style="display:none; background-color: #555;">LÀM LẠI</button>
+<div class="action-bar">
+    <button id="submit-btn" onclick="checkAnswers()">NỘP BÀI XEM ĐÁP ÁN</button>
+    <button id="retry-btn" onclick="location.reload()" style="display:none; background-color: #5f6368;">LÀM LẠI BÀI</button>
 </div>
 
 <div class="overlay" id="overlay"></div>
 <div id="result-popup">
-    <h2>KẾT QUẢ CỦA BẠN</h2>
-    <p id="score-display" style="font-size: 2.5em; font-weight: bold; color: var(--primary-color);"></p>
-    <p id="score-detail"></p>
-    <button onclick="document.getElementById('result-popup').style.display='none'; document.getElementById('overlay').style.display='none';">XEM LỖI SAI</button>
+    <h2 style="margin-top:0">KẾT QUẢ CỦA BẠN</h2>
+    <div id="score-circle" style="font-size: 3.5em; font-weight: 800; color: var(--primary); margin: 20px 0;"></div>
+    <p id="score-detail" style="font-size: 1.1em; margin-bottom: 25px;"></p>
+    <button onclick="closeResult()">XEM LỖI SAI CHI TIẾT</button>
 </div>
 
 <script>
-    // Dữ liệu 68 câu hỏi
-    const questions = [
-        { q: "Câu 1. Trữ lượng dầu mỏ trên thế giới tập trung lớn nhất ở", options: ["Trung Đông", "Bắc Mỹ", "Mỹ La-tinh", "Tây Âu"], a: 0 },
-        { q: "Câu 2. Ngành công nghiệp xuất hiện sớm nhất trên thế giới là", options: ["khai thác than", "khai thác dầu mỏ và khí đốt", "điện lực", "cơ khí và hóa chất"], a: 0 },
-        { q: "Câu 3. Các nước đứng hàng đầu về công nghiệp điện tử - tin học là", options: ["Hoa kì, Nhật Bản, EU", "Hoa kì, Nhật Bản, Nam Á", "Hoa kì, Nhật Bản, LB Nga", "Hoa kì, Nhật Bản, Đông Á"], a: 0 },
-        { q: "Câu 4. Ngành công nghiệp thường phát triển ở nơi có dân cư đông là", options: ["cơ khí", "sản xuất hàng tiêu dùng", "hóa chất", "năng lượng"], a: 1 },
-        { q: "Câu 5. Ngành công nghiệp năng lượng gồm", options: ["khai thác than, dầu khí, điện lực", "khai thác than, dầu khí, thuỷ điện", "khai thác than, dầu khí, nhiệt điện", "khai thác than, dầu khí, điện gió"], a: 0 },
-        { q: "Câu 6. Ngành chủ đạo trong thế kỉ XXI là", options: ["hóa chất", "cơ khí", "điện tử - tin học", "sản xuất hàng tiêu dùng"], a: 2 },
-        { q: "Câu 7. Công nghiệp dệt - may thuộc nhóm ngành", options: ["công nghiệp nặng", "công nghiệp khai thác", "công nghiệp vật liệu", "công nghiệp chế biến"], a: 3 },
-        { q: "Câu 8. Thước đo trình độ phát triển của một quốc gia là", options: ["sản lượng điện", "sản lượng điện bình quân đầu người", "số nhà máy điện", "hệ thống truyền tải"], a: 1 },
-        { q: "Câu 9. Vai trò nào dưới đây không phải của công nghiệp điện lực?", options: ["Nguồn năng lượng không thể thiếu", "Cơ sở tự động hóa", "Đáp ứng nhu cầu đời sống", "Nguồn xuất khẩu của hầu hết quốc gia"], a: 3 },
-        { q: "Câu 10. Cơ cấu điện phụ thuộc chủ yếu vào", options: ["Điều kiện tự nhiên, kỹ thuật, chính sách", "Vị trí địa lí, dân cư", "Văn hoá, thói quen", "Trình độ khoa học"], a: 0 },
-        { q: "Câu 11. Sản phẩm công nghiệp điện lực có đặc điểm", options: ["Phong phú", "Khó di chuyển", "Không lưu giữ được", "Sản xuất đơn giản"], a: 2 },
-        { q: "Câu 12. Công nghiệp thế giới hiện nay chú trọng", options: ["Tăng khai thác", "Giảm chế biến", "Phát triển công nghệ cao", "Phân bố đều"], a: 2 },
-        { q: "Câu 13. Công nghiệp điện tử - tin học cần", options: ["Diện tích rộng", "Nhiều kim loại", "Lao động trình độ cao", "Tài nguyên thiên nhiên"], a: 2 },
-        { q: "Câu 14. Đặc điểm công nghiệp thực phẩm là", options: ["Tiêu thụ nhiều điện", "Vốn ít, quy trình không phức tạp", "Chi phí vận tải lớn", "Cần lao động trình độ cao"], a: 1 },
-        { q: "Câu 15. Đặc điểm sản xuất hàng tiêu dùng là", options: ["Tiêu thụ nhiều kim loại", "Quy trình phức tạp", "Vốn ít, hoàn vốn nhanh", "Đòi hỏi trình độ rất cao"], a: 2 },
-        { q: "Câu 16. Đặc điểm điện tử - tin học là", options: ["Vốn ít", "Lao động trẻ, có trình độ", "Nguyên liệu nông nghiệp", "Cơ sở hạ tầng thấp"], a: 1 },
-        { q: "Câu 17. Nguồn năng lượng sạch gồm", options: ["Mặt trời, gió, địa nhiệt", "Mặt trời, gió, than", "Mặt trời, gió, dầu", "Mặt trời, gió, củi"], a: 0 },
-        { q: "Câu 18. Năng lượng không cạn kiệt là", options: ["Than", "Dầu", "Sức gió", "Củi"], a: 2 },
-        { q: "Câu 19. Xu hướng năng lượng hiện nay là tăng tỉ trọng", options: ["Củi", "Than", "Dầu", "Năng lượng mới"], a: 3 },
-        { q: "Câu 20. Khu vực phát triển mạnh năng lượng tái tạo", options: ["Hoa Kỳ, Nhật, Châu Âu", "Hoa Kỳ, Trung Quốc, Nam Á", "Trung Quốc, Nhật, Tây Á", "Châu Âu, Trung Quốc, Nhật"], a: 0 },
-        { q: "Câu 21. Biện pháp giảm CO2 KHÔNG phải là", options: ["Giảm đốt than", "Giảm đốt dầu", "Tăng trồng rừng", "Tăng đốt củi"], a: 3 },
-        { q: "Câu 22. Xu hướng phát triển công nghiệp KHÔNG phải là", options: ["Tăng khai thác", "Tăng chế biến", "Kỹ thuật cao", "Tăng trưởng xanh"], a: 0 },
-        { q: "Câu 23. Công nghiệp thế giới hiện nay chú trọng", options: ["Tăng khai thác", "Giảm chế biến", "Công nghệ cao", "Phân bố đều"], a: 2 },
-        { q: "Câu 24. Năng lượng sạch tái tạo được là", options: ["Than", "Dầu", "Khí", "Địa nhiệt"], a: 3 },
-        { q: "Câu 25. Đặc điểm sai về khai thác dầu khí", options: ["Không gây ô nhiễm", "Tác động mạnh kinh tế", "Cần kỹ thuật khoan", "Ảnh hưởng khí hậu"], a: 0 },
-        { q: "Câu 26. Ngành ít ô nhiễm nhất là", options: ["Khai thác quặng", "Điện tử - tin học", "Hàng tiêu dùng", "Khai thác than"], a: 1 },
-        { q: "Câu 27. Điện dùng nhiên liệu hóa thạch là", options: ["Điện gió", "Nhiệt điện", "Điện mặt trời", "Thủy điện"], a: 1 },
-        { q: "Câu 28. Đặc điểm đúng về hàng tiêu dùng", options: ["Vốn lớn", "Quy trình phức tạp", "Hoàn vốn nhanh", "Công nghệ cao"], a: 2 },
-        { q: "Câu 29. Ngành điện tử - tin học", options: ["Ngành truyền thống", "Chỉ có ở Châu Âu", "Sản phẩm ít đa dạng", "Yêu cầu lao động cao"], a: 3 },
-        { q: "Câu 30. Khai thác than gắn với cách mạng công nghiệp lần", options: ["Thứ 1", "Thứ 2", "Thứ 3", "Thứ 4"], a: 0 },
-        { q: "Câu 31. Ngành cung cấp nguyên liệu chế tạo máy là", options: ["Khai thác quặng kim loại", "Khai thác dầu", "Khai thác than", "Hàng tiêu dùng"], a: 0 },
-        { q: "Câu 32. Khai thác than cung cấp nguyên liệu cho", options: ["Sợi nhân tạo", "Xăng", "Trang sức", "Quần áo"], a: 0 },
-        { q: "Câu 33. Vai trò công nghiệp hàng tiêu dùng là", options: ["Cung cấp hàng xuất khẩu", "Sản xuất chất đốt", "Phục vụ ăn uống", "Ứng phó khí hậu"], a: 0 },
-        { q: "Câu 34. Đặc điểm SAI của điện lực", options: ["Đa dạng hình thức", "Cần truyền tải", "Sản phẩm lưu giữ được", "Cơ cấu đang thay đổi"], a: 2 },
-        { q: "Câu 35. Phân bố khai thác quặng phụ thuộc vào", options: ["Tài nguyên khoáng sản", "Công nghệ", "Giao thông", "Lao động"], a: 0 },
-        { q: "Câu 36. Điện tử - tin học mạnh ở nước phát triển do", options: ["Công nghệ cao", "Lao động rẻ", "Nhu cầu cao", "Tài nguyên nhiều"], a: 0 },
-        { q: "Câu 37. Ngành tiêu dùng phát triển ở TQ, Ấn Độ KHÔNG phải do", options: ["Lao động đông", "Nhân công rẻ", "Thị trường lớn", "Tiếp giáp biển"], a: 3 },
-        { q: "Câu 38. Thủy điện ở đồi núi do", options: ["Trữ lượng thủy năng lớn", "Mặt bằng rộng", "Dân thưa", "Nhu cầu lớn"], a: 0 },
-        { q: "Câu 39. Ứng dụng công nghệ vào sản xuất nhằm", options: ["Tối ưu quy trình", "Mở rộng khu CN", "Giảm khai thác", "Thúc đẩy xuất khẩu"], a: 0 },
-        { q: "Câu 40. Định hướng tương lai KHÔNG bao gồm", options: ["Năng lượng tái tạo", "Tiết kiệm tài nguyên", "Đẩy mạnh ngành truyền thống", "Giảm chất thải"], a: 2 },
-        { q: "Câu 41. Hoạt động gây ô nhiễm không khí", options: ["Đốt năng lượng hóa thạch", "Thải nước thải", "Chôn lấp rác", "Tái chế nhựa"], a: 0 },
-        { q: "Câu 42. Chất thải dạng lỏng là", options: ["Xà phòng/Nước thải", "Thủy tinh", "Gạch", "Vỏ chai"], a: 0 },
-        { q: "Câu 43. Giải pháp giảm ô nhiễm nước là", options: ["Tiết kiệm năng lượng", "Xử lí trước khi thải", "Xử lí khí thải", "Trồng cây xanh"], a: 1 },
-        { q: "Câu 44. Quốc gia hàng đầu năng lượng tái tạo", options: ["Hoa Kỳ", "Ấn Độ", "Việt Nam", "Nam Phi"], a: 0 },
-        { q: "Câu 45. VN đang phát triển mạnh năng lượng", options: ["Địa nhiệt", "Gió, địa nhiệt", "Thủy triều", "Gió, mặt trời"], a: 3 },
-        { q: "Câu 46. Năng lượng tái tạo KHÔNG giúp", options: ["An ninh năng lượng", "Phát triển giao thông công cộng", "Giảm khí nhà kính", "Bảo vệ môi trường"], a: 1 },
-        { q: "Câu 47. Thước đo trình độ phát triển là", options: ["Hệ thống truyền tải", "Số nhà máy", "Sản lượng điện", "Sản lượng điện bình quân đầu người"], a: 3 },
-        { q: "Câu 48. Vai trò KHÔNG phải của điện lực", options: ["Xuất khẩu thu ngoại tệ chính", "Đáp ứng nhu cầu xã hội", "Cơ sở tự động hóa", "Năng lượng thiết yếu"], a: 0 },
-        { q: "Câu 49. Đặc điểm sản phẩm điện lực", options: ["Ít kỹ thuật", "Không lưu giữ được", "Khó di chuyển", "Phong phú"], a: 1 },
-        { q: "Câu 50. Đặc điểm KHÔNG thuộc điện tử, tin học", options: ["Sử dụng nhiều năng lượng gây ô nhiễm", "Sản phẩm hiện đại", "Lao động trình độ cao", "Ngành trẻ"], a: 0 },
-        { q: "Câu 51. Quốc gia khai thác dầu chính là", options: ["Hoa Kỳ, Nga, A-rập Xê-út", "Hoa Kỳ, Nga, Nhật", "Hoa Kỳ, Đức", "Hoa Kỳ, TQ"], a: 0 },
-        { q: "Câu 52. Ngành tiêu dùng KHÔNG có đặc điểm", options: ["Quy trình đơn giản", "Hoàn vốn nhanh", "Xây dựng ngắn", "Vốn rất lớn"], a: 3 },
-        { q: "Câu 53. Công nghiệp thực phẩm KHÔNG có vai trò", options: ["Ăn uống", "Mặc", "Thúc đẩy nông nghiệp", "Tăng giá trị"], a: 1 },
-        { q: "Câu 54. Năng lượng tái tạo KHÔNG nhằm", options: ["Giảm khí nhà kính", "An ninh năng lượng", "Nguồn cung cho CN", "Hạn chế sinh hoạt"], a: 3 },
-        { q: "Câu 55. Ý sai về khai thác than", options: ["Thúc đẩy nông nghiệp", "Xuất hiện sớm", "Năng lượng truyền thống", "Gây ô nhiễm"], a: 0 },
-        { q: "Câu 56. Phân bố than, dầu khí gắn với", options: ["Vùng nguyên liệu", "Giao thông", "Thị trường", "Lao động cao"], a: 0 },
-        { q: "Câu 57. Điện tử - tin học cần", options: ["Lao động cao", "Diện tích rộng", "Nhiều kim loại", "Tài nguyên"], a: 0 },
-        { q: "Câu 58. Ngành KHÔNG cần nhiều lao động là", options: ["Thực phẩm", "Thuỷ điện", "Dệt - may", "Giày - da"], a: 1 },
-        { q: "Câu 59. Năng lượng tái tạo KHÔNG nhằm", options: ["Cung cấp cho CN", "An ninh năng lượng", "Hạn chế sinh hoạt", "Giảm phát thải"], a: 2 },
-        { q: "Câu 60. Ngành ít tác động môi trường nhất", options: ["Điện tử - tin học", "Than", "Dầu khí", "Thực phẩm"], a: 0 },
-        { q: "Câu 61. Nguồn KHÔNG tái tạo là", options: ["Mặt trời", "Gió", "Than, dầu mỏ", "Thuỷ triều"], a: 2 },
-        { q: "Câu 62. Định hướng tương lai KHÔNG phải là", options: ["Công nghệ cao", "Mở rộng ngành truyền thống", "Khai thác hợp lí", "Tối ưu quy trình"], a: 1 },
-        { q: "Câu 63. Khai thác quặng kim loại gây ô nhiễm", options: ["Không khí", "Đất và nước", "Nước mặt", "Biển"], a: 1 },
-        { q: "Câu 64. Cơ sở công nghiệp hiện đại là", options: ["Than", "Điện lực", "Dầu khí", "Quặng"], a: 1 },
-        { q: "Câu 65. Dệt - may thuộc nhóm", options: ["Nặng", "Vật liệu", "Chế biến", "Khai thác"], a: 2 },
-        { q: "Câu 66. Năng lượng tái tạo gồm", options: ["Mặt trời, gió, than", "Mặt trời, gió, dầu", "Nước, gió, củi", "Mặt trời, gió, địa nhiệt"], a: 3 },
-        { q: "Câu 67. Thực phẩm phân bố rộng KHÔNG phải do", options: ["Nguyên liệu phong phú", "Lao động dồi dào", "Phụ thuộc khoáng sản", "Thị trường lớn"], a: 2 },
-        { q: "Câu 68. Tác động tích cực của CN là", options: ["Cạn kiệt tài nguyên", "Biến đổi cảnh quan", "Cải thiện chất lượng môi trường", "Gây ô nhiễm"], a: 2 }
+    const data = [
+        { q: "Câu 1. Trữ lượng dầu mỏ trên thế giới tập trung lớn nhất ở", options: ["Trung Đông.", "Bắc Mỹ.", "Mỹ La-tinh.", "Tây Âu."], a: 0 },
+        { q: "Câu 2. Ngành công nghiệp xuất hiện sớm nhất trên thế giới là", options: ["khai thác than.", "khai thác dầu mỏ và khí đốt.", "điện lực.", "cơ khí và hóa chất."], a: 0 },
+        { q: "Câu 3. Các nước và khu vực đứng hàng đầu thế giới về công nghiệp điện tử - tin học là", options: ["Hoa Kì, Nhật Bản, EU.", "Hoa Kì, Nhật Bản, Nam Á.", "Hoa Kì, Nhật Bản, LB Nga.", "Hoa Kì, Nhật Bản, Đông Á."], a: 0 },
+        { q: "Câu 4. Ngành công nghiệp nào sau đây thường được phát triển ở nơi có dân cư đông", options: ["cơ khí.", "sản xuất hàng tiêu dùng.", "hóa chất.", "năng lượng."], a: 1 },
+        { q: "Câu 5. Ngành công nghiệp năng lượng gồm", options: ["khai thác than, khai thác dầu khí, điện lực.", "khai thác than, khai thác dầu khí, thuỷ điện.", "khai thác than, khai thác dầu khí, nhiệt điện.", "khai thác than, khai thác dầu khí, điện gió."], a: 0 },
+        { q: "Câu 6. Ngành công nghiệp giữ vai trò chủ đạo trong hệ thống công nghiệp trên thế giới ở thế kỉ XXI là", options: ["hóa chất.", "cơ khí.", "điện tử - tin học.", "sản xuất hàng tiêu dùng."], a: 2 },
+        { q: "Câu 7. Công nghiệp dệt - may thuộc nhóm ngành", options: ["công nghiệp nặng.", "công nghiệp khai thác.", "công nghiệp vật liệu.", "công nghiệp chế biến."], a: 3 },
+        { q: "Câu 8. Một trong những thước đo để đánh giá trình độ phát triển của một quốc gia là", options: ["sản lượng điện của quốc gia đó.", "sản lượng điện bình quân của quốc gia đó.", "số nhà máy điện trong nước.", "hệ thống truyền tải điện trong nước."], a: 1 },
+        { q: "Câu 9. Vai trò nào dưới đây không phải của công nghiệp điện lực?", options: ["Là nguồn năng lượng không thể thiếu trong xã hội hiện đại.", "Là cơ sở để tiến hành cơ khí hoá, tự động hoá trong sản xuất.", "Là điều kiện thiết yếu để đáp ứng nhiều nhu cầu trong đời sống xã hội.", "Là nguồn xuất khẩu thu ngoại tệ của hầu hết các quốc gia."], a: 3 },
+        { q: "Câu 10. Các nước trên thế giới có cơ cấu điện khác nhau, phụ thuộc vào", options: ["điều kiện tự nhiên, trình độ kĩ thuật, chính sách phát triển.", "vị trí địa lí, đặc điểm và sự phân bố dân cư, số đô thị,...", "điều kiện tự nhiên, trình độ văn hoá của dân cư, thói quen sử dụng năng lượng.", "vị trí địa lí, sự phát triển công nghiệp, trình độ khoa học kĩ thuật,..."], a: 0 },
+        { q: "Câu 11. Sản phẩm công nghiệp điện lực có đặc điểm là", options: ["phong phú, đa dạng.", "khó di chuyển từ địa điểm này đen địa điếm khác.", "không lưu giữ được.", "sản xuất ít đòi hỏi về trình độ kĩ thuật."], a: 2 },
+        { q: "Câu 12. Công nghiệp thế giới hiện nay chú trọng", options: ["tăng tỉ trọng công nghiệp khai thác.", "giảm tỉ trọng công nghiệp chế biến.", "phát triển các ngành công nghệ cao.", "phân bố đều khắp ở các địa phương."], a: 2 },
+        { q: "Câu 13. Công nghiệp điện tử - tin học là ngành cần", options: ["nhiều diện tích rộng.", "nhiều kim loại, điện.", "lao động trình độ cao.", "tài nguyên thiên nhiên."], a: 2 },
+        { q: "Câu 14. Đặc điểm công nghiệp thực phẩm là", options: ["không tiêu thụ nhiều kim loại, điện và nước.", "vốn đầu tư ít, quy trình sản xuất không phức tạp.", "chi phí vận tải và vốn đầu tư không nhiều.", "đòi hỏi lực lượng lao động trẻ, có trình độ."], a: 1 },
+        { q: "Câu 15. Đặc điểm công nghiệp sản xuất hàng tiêu dùng là", options: ["không tiêu thụ nhiều kim loại, điện và nước.", "vốn đầu tư nhiều, quy trình sản xuất phức tạp.", "chi phí vận tải và vốn đầu tư không nhiều.", "đòi hỏi lực lượng lao động trẻ, có trình độ."], a: 2 },
+        { q: "Câu 16. Đặc điểm công nghiệp điện tử - tin học là", options: ["chi phí vận tải và vốn đầu tư không nhiều.", "đòi hỏi lực lượng lao động trẻ, có trình độ.", "nguyên liệu chủ yếu từ nông nghiệp và thủy sản.", "vốn đầu tư ít, cơ sở hạ tầng kĩ thuật phát triển."], a: 1 },
+        { q: "Câu 17. Nguồn năng lượng sạch gồm", options: ["năng lượng mặt trời, sức gió, địa nhiệt.", "năng lượng mặt trời, sức gió, than đá.", "năng lượng mặt trời, sức gió, dầu khí.", "năng lượng mặt trời, sức gió, củi gỗ."], a: 0 },
+        { q: "Câu 18. Nguồn năng lượng nào sau đây được xếp vào loại không cạn kiệt?", options: ["Than đá.", "Dầu khí.", "Sức gió.", "Củi gỗ."], a: 2 },
+        { q: "Câu 19. Cơ cấu sử dụng năng lượng hiện nay có sự thay đổi theo hướng tập trung tăng tỉ trọng", options: ["củi gỗ.", "than đá.", "dầu khí.", "năng lượng mới."], a: 3 },
+        { q: "Câu 20. Các quốc gia (khu vực) phát triển mạnh năng lượng tái tạo là", options: ["Hoa kì, Nhật Bản, Châu Âu.", "Hoa Kì, Trung Quốc, Nam Á.", "Trung Quốc, Nhật Bản, Tây Á.", "Châu Âu, Trung Quốc, Nhật Bản."], a: 0 },
+        { q: "Câu 21. Biện pháp quan trọng để giảm khí thải CO2 không phải là", options: ["giảm đốt than đá.", "giảm đốt dầu khí.", "tăng trồng rừng.", "tăng đốt củi gỗ."], a: 3 },
+        { q: "Câu 22. Xu hướng phát triển công nghiệp thế giới hiện nay không phải là", options: ["tăng tỉ trọng công nghiệp khai thác.", "tăng tỉ trọng công nghiệp chế biến.", "phát triển các ngành có kĩ thuật cao.", "sản xuất chú trọng tăng trưởng xanh."], a: 0 },
+        { q: "Câu 23. Công nghiệp thế giới hiện nay chú trọng", options: ["tăng tỉ trọng công nghiệp khai thác.", "giảm tỉ trọng công nghiệp chế biến.", "phát triển các ngành công nghệ cao.", "phân bố đều khắp ở các địa phương."], a: 2 },
+        { q: "Câu 24. Nguồn năng lượng nào dưới đây được coi là năng lượng sạch có thể tái tạo được?", options: ["Than đá.", "Dầu mỏ.", "Khí đốt.", "Địa nhiệt."], a: 3 },
+        { q: "Câu 25. Đặc điểm không đúng với ngành công nghiệp khai thác dầu khí là", options: ["không gây ô nhiễm môi trường.", "tác động mạnh đến kinh tế thế giới.", "phụ thuộc vào kỹ thuật khoan sâu.", "ảnh hưởng đến biến đổi khí hậu."], a: 0 },
+        { q: "Câu 26. Ngành công nghiệp nào sau đây ít gây ô nhiễm môi trường hơn các ngành còn lại?", options: ["Khai thác quặng kim loại.", "Điện tử - tin học.", "Sản xuất hàng tiêu dùng.", "Khai thác than."], a: 1 },
+        { q: "Câu 27. Hình thức sản xuất điện nào sau đây sử dụng nhiên liệu hóa thạch?", options: ["Điện gió.", "Nhiệt điện.", "Điện mặt trời.", "Thủy điện."], a: 1 },
+        { q: "Câu 28. Đặc điểm nào sau đây đúng với ngành công nghiệp sản xuất hàng tiêu dùng?", options: ["Cần nguồn vốn đầu tư lớn.", "Quy trình sản xuất phức tạp.", "Khả năng hoàn vốn nhanh.", "Yêu cầu cao về công nghệ."], a: 2 },
+        { q: "Câu 29. Ngành công nghiệp điện tử - tin học", options: ["là ngành công nghiệp truyền thống.", "chỉ phát triển ở các nước châu Âu.", "cơ cấu sản phẩm còn kém đa dạng.", "yêu cầu lao động chuyên môn cao."], a: 3 },
+        { q: "Câu 30. Sự phát triển của ngành công nghiệp khai thác than gắn với cuộc cách mạng công nghiệp lần thứ nhất?", options: ["Lần thứ nhất.", "Lần thứ hai.", "Lần thứ ba.", "Lần thứ tư."], a: 0 },
+        { q: "Câu 31. Ngành công nghiệp nào sau đây cung cấp nguyên vật liệu để sản xuất máy móc, thiết bị?", options: ["Khai thác quặng kim loại.", "Khai thác dầu khí.", "Khai thác than.", "Sản xuất hàng tiêu dùng."], a: 0 },
+        { q: "Câu 32. Ngành công nghiệp khai thác than cung cấp nguyên, nhiên liệu để sản xuất", options: ["sợi nhân tạo.", "xăng.", "trang sức.", "quần áo."], a: 0 },
+        { q: "Câu 33. Vai trò của ngành công nghiệp sản xuất hàng tiêu dùng là", options: ["cung cấp hàng xuất khẩu.", "sản xuất các loại chất đốt.", "phục vụ nhu cầu ăn uống.", "ứng phó với biến đổi khí hậu."], a: 0 },
+        { q: "Câu 34. Đặc điểm không đúng với ngành công nghiệp điện lực là", options: ["hình thức sản xuất đa dạng.", "cần hệ thống truyền tải điện.", "sản phẩm lưu giữ được.", "cơ cấu sản lượng đang thay đổi."], a: 2 },
+        { q: "Câu 35. Nhân tố chủ yếu ảnh hưởng đến sự phân bố ngành công nghiệp khai thác quặng kim loại là", options: ["tài nguyên khoáng sản.", "khoa học – công nghệ.", "giao thông vận tải.", "lực lượng lao động."], a: 0 },
+        { q: "Câu 36. Ngành công nghiệp điện tử - tin học phát triển mạnh ở các nước phát triển chủ yếu do", options: ["Trình độ khoa học – công nghệ cao.", "Nguồn lao động đông đảo, giá rẻ.", "Nhu cầu sử dụng thiết bị cao.", "Nguồn tài nguyên thiên nhiên dồi dào."], a: 0 },
+        { q: "Câu 37. Các nước Trung Quốc, Ấn Độ… có ngành hàng tiêu dùng phát triển không phải do", options: ["Nguồn nhân lực dồi dào.", "Giá nhân công rẻ.", "Thị trường tiêu thụ lớn.", "Vị trí tiếp giáp biển."], a: 3 },
+        { q: "Câu 38. Thủy điện thường phân bố ở vùng đồi núi chủ yếu do", options: ["trữ lượng thủy năng lớn.", "mặt bằng xây dựng rộng.", "dân cư tập trung thưa thớt.", "nhu cầu điện năng lớn."], a: 0 },
+        { q: "Câu 39. Công nghiệp hiện đại ứng dụng công nghệ vào sản xuất nhằm", options: ["Tối ưu hóa quy trình sản xuất.", "Mở rộng các khu công nghiệp.", "Giảm khai thác khoáng sản.", "Thúc đẩy xuất khẩu hàng hóa."], a: 0 },
+        { q: "Câu 40. Định hướng phát triển tương lai không bao gồm", options: ["Sử dụng năng lượng tái tạo.", "Tiết kiệm tài nguyên thiên nhiên.", "Đẩy mạnh các ngành truyền thống.", "Giảm lượng chất thải đầu ra."], a: 2 },
+        { q: "Câu 41. Hoạt động gây ô nhiễm môi trường không khí là", options: ["Đốt cháy năng lượng hóa thạch.", "Thải nước thải ra môi trường.", "Chôn lấp chất thải rắn.", "Tái chế nguyên vật liệu nhựa."], a: 0 },
+        { q: "Câu 42. Chất thải công nghiệp nào sau đây tồn tại ở dạng lỏng?", options: ["Xà phòng/Nước thải.", "Thủy tinh.", "Gạch.", "Vỏ chai."], a: 0 },
+        { q: "Câu 43. Giải pháp phù hợp để giảm thiểu ô nhiễm môi trường nước là", options: ["Áp dụng công nghệ tiết kiệm.", "Xử lí chất thải trước khi thải.", "Đầu tư hệ thống xử lí khí thải.", "Trồng cây xanh."], a: 1 },
+        { q: "Câu 44. Quốc gia phát triển năng lượng tái tạo hàng đầu thế giới", options: ["Hoa Kỳ.", "Ấn Độ.", "Việt Nam.", "Nam Phi."], a: 0 },
+        { q: "Câu 45. Hiện nay, nguồn năng lượng tái tạo nào đang được khai thác tại Việt Nam?", options: ["Địa nhiệt, thủy triều.", "Gió, địa nhiệt.", "Thủy triều, gió.", "Gió, mặt trời."], a: 3 },
+        { q: "Câu 46. Việc phát triển năng lượng tái tạo không mang lại lợi ích nào?", options: ["Đảm bảo an ninh năng lượng.", "Phát triển giao thông công cộng.", "Giảm phát thải khí nhà kính.", "Góp phần bảo vệ môi trường."], a: 1 },
+        { q: "Câu 47: Một trong những thước đo để đánh giá trình độ phát triển của một quốc gia là", options: ["hệ thống truyền tải điện.", "số nhà máy điện.", "sản lượng điện.", "sản lượng điện bình quân đầu người."], a: 3 },
+        { q: "Câu 48: Vai trò nào dưới đây không phải của công nghiệp điện lực?", options: ["Là nguồn xuất khẩu thu ngoại tệ của hầu hết các quốc gia.", "Là điều kiện thiết yếu đời sống.", "Là cơ sở tự động hoá.", "Là năng lượng không thể thiếu."], a: 0 },
+        { q: "Câu 49: Sản phẩm công nghiệp điện lực có đặc điểm là", options: ["ít đòi hỏi về trình độ kĩ thuật.", "không lưu giữ được.", "khó di chuyển.", "phong phú, đa dạng."], a: 1 },
+        { q: "Câu 50: Đặc điểm nào dưới đây không thuộc ngành điện tử, tin học?", options: ["Sử dụng nhiều năng lượng gây ô nhiễm.", "Sản phẩm phong phú, hiện đại.", "Lao động trình độ cao.", "Ngành công nghiệp trẻ."], a: 0 },
+        { q: "Câu 51: Các quốc gia khai thác dầu chủ yếu của thế giới là", options: ["Hoa Kỳ, LB Nga, A-rập Xê-út, I-rắc.", "Hoa Kỳ, Nga, Nhật Bản, Ấn Độ.", "Hoa Kỳ, Hàn Quốc, Đức.", "Hoa Kỳ, Nhật Bản, Trung Quốc."], a: 0 },
+        { q: "Câu 52: Đặc điểm ngành hàng tiêu dùng không phải là", options: ["quy trình tương đối đơn giản.", "hoàn vốn tương đối nhanh.", "xây dựng tương đối ngắn.", "đòi hỏi nguồn vốn đầu tư rất lớn."], a: 3 },
+        { q: "Câu 53: Vai trò nào sau đây không đúng với công nghiệp thực phẩm?", options: ["Đáp ứng nhu cầu ăn uống.", "Phục vụ việc mặc.", "Thúc đẩy nông nghiệp.", "Làm tăng giá trị sản phẩm."], a: 1 },
+        { q: "Câu 54: Đẩy mạnh sử dụng năng lượng tái tạo không nhằm", options: ["giảm phát thải khí nhà kính.", "đảm bảo an ninh năng lượng.", "đảm bảo cung cấp năng lượng.", "hạn chế sử dụng điện sinh hoạt."], a: 3 },
+        { q: "Câu 55: Phát biểu nào không đúng với ngành khai thác than?", options: ["Thúc đẩy ngành nông nghiệp.", "Xuất hiện từ rất sớm.", "Nguồn năng lượng truyền thống.", "Gây tác động xấu tới môi trường."], a: 0 },
+        { q: "Câu 56: Đặc điểm phân bố chung của khai thác than, dầu khí gắn với", options: ["vùng nguyên liệu.", "các đầu mối giao thông.", "thị trường tiêu thụ.", "nguồn lao động cao."], a: 0 },
+        { q: "Câu 57: Công nghiệp điện tử - tin học là ngành cần", options: ["lao động trình độ cao.", "nhiều diện tích rộng.", "nhiều kim loại, điện.", "tài nguyên thiên nhiên."], a: 0 },
+        { q: "Câu 58: Hoạt động công nghiệp nào sau đây không cần nhiều lao động?", options: ["Thực phẩm.", "Thuỷ điện.", "Dệt - may.", "Giày - da."], a: 1 },
+        { q: "Câu 59: Việc đẩy mạnh sử dụng năng lượng tái tạo không nhằm", options: ["đảm bảo nguồn cho công nghiệp.", "đảm bảo an ninh năng lượng.", "hạn chế sử dụng sinh hoạt.", "giảm phát thải khí nhà kính."], a: 2 },
+        { q: "Câu 60: Ngành công nghiệp nào sau đây ít tác động đến môi trường nhất?", options: ["Điện tử - tin học.", "Khai thác than.", "Khai thác dầu khí.", "Thực phẩm."], a: 0 },
+        { q: "Câu 61: Nguồn sản xuất điện nào sau đây không phải là năng lượng tái tạo?", options: ["Mặt Trời.", "Gió.", "Than, dầu mỏ.", "Thuỷ triều."], a: 2 },
+        { q: "Câu 62: Nhận định nào không phải định hướng phát triển công nghiệp tương lai?", options: ["Chuyển dịch sang kĩ thuật cao.", "Tiếp tục mở rộng ngành truyền thống.", "Khai thác tài nguyên hợp lí.", "Ứng dụng thành tựu công nghệ."], a: 1 },
+        { q: "Câu 63: Hoạt động khai thác quặng kim loại gây ô nhiễm nghiêm trọng đến", options: ["không khí.", "đất và nước.", "nước mặt.", "biển."], a: 1 },
+        { q: "Câu 64: Ngành nào được xem là cơ sở để phát triển công nghiệp hiện đại?", options: ["Khai thác than.", "Điện lực.", "Khai thác dầu khí.", "Khai thác quặng."], a: 1 },
+        { q: "Câu 65: Công nghiệp dệt - may thuộc nhóm ngành", options: ["nặng.", "vật liệu.", "chế biến.", "khai thác."], a: 2 },
+        { q: "Câu 66: Nguồn năng lượng tái tạo gồm", options: ["mặt trời, gió, than đá.", "mặt trời, gió, dầu khí.", "sức nước, sức gió, củi.", "mặt trời, gió, địa nhiệt."], a: 3 },
+        { q: "Câu 67: Công nghiệp thực phẩm phân bố rộng khắp không phải vì", options: ["nguyên liệu phong phú.", "lao động dồi dào.", "phụ thuộc khoáng sản.", "thị trường rộng lớn."], a: 2 },
+        { q: "Câu 68: Tác động tích cực của công nghiệp đối với môi trường là", options: ["cạn kiệt tài nguyên.", "biến đổi cảnh quan.", "góp phần cải thiện chất lượng môi trường.", "nước thải chứa hóa chất."], a: 2 }
     ];
 
+    const quizBox = document.getElementById('quiz-box');
+
     function renderQuiz() {
-        const container = document.getElementById('quiz-content');
-        container.innerHTML = questions.map((item, idx) => `
-            <div class="question-item" id="q-box-${idx}">
+        quizBox.innerHTML = data.map((item, idx) => `
+            <div class="question-item" id="item-${idx}">
                 <span class="q-text">${item.q}</span>
                 <div class="options-grid">
                     ${item.options.map((opt, i) => `
                         <label class="option-label" id="label-${idx}-${i}">
                             <input type="radio" name="q${idx}" value="${i}">
-                            ${String.fromCharCode(65+i)}. ${opt}
+                            <span style="margin-left:8px">${String.fromCharCode(65+i)}. ${opt}</span>
                         </label>
                     `).join('')}
                 </div>
@@ -204,42 +205,42 @@
         `).join('');
     }
 
-    function submitQuiz() {
+    function checkAnswers() {
         let score = 0;
-        
-        questions.forEach((item, idx) => {
+        data.forEach((item, idx) => {
             const selected = document.querySelector(`input[name="q${idx}"]:checked`);
-            const qBox = document.getElementById(`q-box-${idx}`);
+            const correctLabel = document.getElementById(`label-${idx}-${item.a}`);
             
-            // Hiện đáp án đúng (Màu xanh)
-            document.getElementById(`label-${idx}-${item.a}`).classList.add('is-correct');
+            // Hiện đáp án đúng màu xanh
+            correctLabel.classList.add('is-correct');
             
             if (selected) {
                 const val = parseInt(selected.value);
                 if (val === item.a) {
                     score++;
                 } else {
-                    // Nếu chọn sai, tô màu đỏ câu đã chọn
                     document.getElementById(`label-${idx}-${val}`).classList.add('is-wrong');
                 }
             }
-
-            // Khóa tất cả radio để không sửa được
-            const inputs = qBox.querySelectorAll('input');
+            
+            // Khóa các radio
+            const inputs = document.getElementsByName(`q${idx}`);
             inputs.forEach(input => input.disabled = true);
         });
 
-        // Hiển thị kết quả
-        const finalScore = ((score / questions.length) * 10).toFixed(1);
-        document.getElementById('score-display').innerText = finalScore + " / 10";
-        document.getElementById('score-detail').innerText = `Bạn đúng ${score} trên tổng số ${questions.length} câu.`;
+        const finalScore = ((score / data.length) * 10).toFixed(1);
+        document.getElementById('score-circle').innerText = finalScore;
+        document.getElementById('score-detail').innerText = `Bạn đã trả lời đúng ${score} trên tổng số ${data.length} câu hỏi.`;
         
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('result-popup').style.display = 'block';
-        
-        // Hiện nút làm lại, ẩn nút nộp bài
         document.getElementById('submit-btn').style.display = 'none';
         document.getElementById('retry-btn').style.display = 'inline-block';
+    }
+
+    function closeResult() {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('result-popup').style.display = 'none';
     }
 
     window.onload = renderQuiz;
@@ -247,3 +248,4 @@
 
 </body>
 </html>
+ 
