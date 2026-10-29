@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn Tập Kiểm Tra Môn Địa Lí 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-earth-americas text-2xl text-amber-300"></i>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">ÔN TẬP ĐỊA LÍ 11</h1>
+                    <p class="text-xs text-indigo-200">Hệ thống Trắc nghiệm & Chấm điểm Tự động</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="btn-quiz-mode" onclick="switchTab('quiz')" class="px-3 py-1.5 rounded-lg text-sm font-medium transition bg-white text-indigo-700 shadow">
+                    <i class="fa-solid fa-pen-to-square mr-1"></i> Làm bài
+                </button>
+                <button id="btn-keys-mode" onclick="switchTab('keys')" class="px-3 py-1.5 rounded-lg text-sm font-medium transition bg-indigo-800 hover:bg-indigo-600 text-white">
+                    <i class="fa-solid fa-key mr-1"></i> Đáp án & Lời giải
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- QUIZ TAB -->
+        <div id="tab-quiz" class="space-y-8">
+            <!-- Score Board (Sticky / Hidden by default until submitted) -->
+            <div id="score-summary" class="hidden bg-white p-6 rounded-2xl shadow-md border border-slate-200 text-center mb-6">
+                <h2 class="text-xl font-bold text-slate-800 mb-2">Kết Quả Làm Bài</h2>
+                <div class="flex justify-center items-center gap-6 my-4">
+                    <div class="text-center">
+                        <span class="block text-3xl font-extrabold text-indigo-600" id="total-score">0.0</span>
+                        <span class="text-xs text-slate-500 uppercase font-semibold">Thang điểm 10</span>
+                    </div>
+                    <div class="h-10 w-px bg-slate-200"></div>
+                    <div class="text-center">
+                        <span class="block text-2xl font-bold text-emerald-600" id="correct-count">0/0</span>
+                        <span class="text-xs text-slate-500 uppercase font-semibold">Câu trả lời đúng</span>
+                    </div>
+                </div>
+                <p id="feedback-text" class="text-sm font-medium text-slate-600"></p>
+            </div>
+
+            <!-- PHẦN I -->
+            <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="border-b border-slate-100 pb-3 mb-6">
+                    <h2 class="text-lg font-bold text-indigo-700 flex items-center gap-2">
+                        <span class="bg-indigo-100 text-indigo-800 text-xs px-2.5 py-1 rounded-full">Phần I</span>
+                        Câu Trắc Nghiệm Nhiều Phương Án Lựa Chọn (25 câu)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">Chọn 01 phương án đúng nhất cho mỗi câu hỏi.</p>
+                </div>
+                <div id="part1-questions" class="space-y-6"></div>
+            </section>
+
+            <!-- PHẦN II -->
+            <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="border-b border-slate-100 pb-3 mb-6">
+                    <h2 class="text-lg font-bold text-indigo-700 flex items-center gap-2">
+                        <span class="bg-indigo-100 text-indigo-800 text-xs px-2.5 py-1 rounded-full">Phần II</span>
+                        Câu Trắc Nghiệm Đúng / Sai (4 câu)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">Thí sinh chọn Đúng hoặc Sai cho mỗi ý a), b), c), d).</p>
+                </div>
+                <div id="part2-questions" class="space-y-8"></div>
+            </section>
+
+            <!-- PHẦN III -->
+            <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="border-b border-slate-100 pb-3 mb-6">
+                    <h2 class="text-lg font-bold text-indigo-700 flex items-center gap-2">
+                        <span class="bg-indigo-100 text-indigo-800 text-xs px-2.5 py-1 rounded-full">Phần III</span>
+                        Câu Trắc Nghiệm Trả Lời Ngắn (7 câu)
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-1">Điền kết quả tính toán vào ô trống theo đúng yêu cầu làm tròn.</p>
+                </div>
+                <div id="part3-questions" class="space-y-6"></div>
+            </section>
+
+            <!-- Submit Button -->
+            <div class="flex justify-center pt-4 pb-12">
+                <button onclick="gradeQuiz()" class="px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg hover:shadow-indigo-200 transition text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Nộp Bài & Xem Điểm
+                </button>
+            </div>
+        </div>
+
+        <!-- KEYS TAB -->
+        <div id="tab-keys" class="hidden space-y-8">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold text-indigo-700 mb-4 border-b pb-2">ĐÁP ÁN VÀ LỜI GIẢI CHI TIẾT</h2>
+                <div id="detailed-keys-container" class="space-y-6"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 text-xs text-center py-4 mt-auto">
+        <p>© Ôn tập Địa lí 11 - Chương trình Giáo dục Phổ thông mới</p>
+    </footer>
+
+    <script>
+        // DATA STRUCTURE
+        const p1Data = [
+            { id: 1, q: "Việt Nam là thành viên của các tổ chức liên kết khu vực nào sau đây?", options: ["A. EU và ASEAN.", "B. NAFTA và EU.", "C. NAFTA và APEC.", "D. APEC và ASEAN."], ans: 3, explain: "Việt Nam gia nhập ASEAN năm 1995 và APEC năm 1998." },
+            { id: 2, q: "Việt Nam là thành viên của tổ chức Diễn đàn Hợp tác Kinh tế châu Á – Thái Bình Dương vào năm nào?", options: ["A. 2007.", "B. 1976.", "C. 1998.", "D. 1977."], ans: 2, explain: "Việt Nam gia nhập APEC vào tháng 11/1998." },
+            { id: 3, q: "Tính đến tháng 1/2020, Tổ chức Thương mại Thế giới có tất cả bao nhiêu thành viên?", options: ["A. 164.", "B. 150.", "C. 162.", "D. 153."], ans: 0, explain: "Tính đến tháng 1/2020, WTO có 164 thành viên." },
+            { id: 4, q: "Tổ chức quỹ Tiền tệ Quốc tế được thành lập năm nào?", options: ["A. 1944.", "B. 1945.", "C. 1989.", "D. 1998."], ans: 0, explain: "IMF chính thức được thành lập năm 1944 tại hội nghị Bretton Woods." },
+            { id: 5, q: "An ninh truyền thống là khái niệm đã có từ lâu, liên quan chủ yếu đến", options: ["A. an ninh chính trị.", "B. an ninh năng lượng.", "C. an ninh lương thực.", "D. an ninh kinh tế."], ans: 0, explain: "An ninh truyền thống liên quan chủ yếu đến an ninh quân sự và chính trị." },
+            { id: 6, q: "Một số tổ chức có vai trò quan trọng đối với an ninh lương thực trên thế giới hiện nay là", options: ["A. IMF, WTO.", "B. WFP, APEC.", "C. FAO, WFP.", "D. EU, ASEAN."], ans: 2, explain: "FAO (Tổ chức Nông lương LHQ) và WFP (Chương trình Lương thực Thế giới)." },
+            { id: 7, q: "Hiện nay, châu lục nào sau đây đang khủng hoảng an ninh lương thực cao nhất thế giới?", options: ["A. Châu Á.", "B. Châu Phi.", "C. Châu Âu.", "D. Châu Mĩ."], ans: 1, explain: "Châu Phi là khu vực chịu khủng hoảng an ninh lương thực cao nhất." },
+            { id: 8, q: "Ý nào sau đây không đúng với tình hình dân cư và xã hội khu vực Mỹ La tinh?", options: ["A. Tỉ lệ tăng dân số cao.", "B. Đa dạng chủng tộc do lai giữa các nhóm người bản địa.", "C. Đang trong thời kì dân số vàng.", "D. Xung đột xã hội xuất hiện ở một số quốc gia."], ans: 1, explain: "Sự đa dạng chủng tộc ở Mỹ Latinh hình thành do sự hòa huyết giữa người bản địa (Anh-điêng), người châu Âu và người châu Phi nhập cư, không chỉ riêng giữa các nhóm bản địa với nhau." },
+            { id: 9, q: "Mỹ Latinh là khu vực có tỉ lệ dân thành thị", options: ["A. rất cao và tăng nhanh.", "B. rất cao và tăng chậm.", "C. khá cao và tăng chậm.", "D. nhỏ và gia tăng nhanh."], ans: 0, explain: "Mỹ Latinh có tỉ lệ dân thành thị rất cao (khoảng 80%) và tăng nhanh do đô thị hóa tự phát." },
+            { id: 10, q: "Mỹ La tinh gồm các vùng nào?", options: ["A. Toàn bộ phần Bắc Mỹ, Mê-hi-cô, Trung Mỹ và vùng biển Ca-ri-bê.", "B. Toàn bộ phần Bắc Mỹ, Mê-hi-cô và vùng biển Ca-ri-bê.", "C. Toàn bộ phần Nam Mỹ, Mê-hi-cô và vùng biển Ca-ri-bê.", "D. Toàn bộ phần Nam Mỹ, Mê-hi-cô, Trung Mỹ và vùng biển Ca-ri-bê."], ans: 3, explain: "Mỹ Latinh gồm Mê-hi-cô, Trung Mỹ, vùng biển Ca-ri-bê và toàn bộ Nam Mỹ." },
+            { id: 11, q: "Kênh đào có vai trò đặc biệt quan trọng đối với phát triển kinh tế và giao thương thuộc khu vực Mỹ La tinh là?", options: ["A. Kênh đào Panama.", "B. Kênh đào Malacca.", "C. Kênh đào Suez.", "D. Kênh đào Kiel."], ans: 0, explain: "Kênh đào Panama nằm ở eo đất Trung Mỹ thuộc Mỹ Latinh." },
+            { id: 12, q: "Đồng bằng nào ở Mỹ La tinh thuận lợi phát triển ngành nông nghiệp?", options: ["A. Đồng bằng A-ma-dôn.", "B. Đồng bằng Tu-ran.", "C. Đồng bằng Mê-hi-cô.", "D. Đồng bằng La Pla-ta."], ans: 3, explain: "Đồng bằng La Pla-ta có đất đai phì nhiêu, khí hậu ôn hòa thuận lợi nông nghiệp." },
+            { id: 13, q: "Do đô thị hóa tự phát nên dân đô thị ở khu vực Mỹ Latinh", options: ["A. ổn định việc làm, không gian cư trú rộng, thu nhập rất thấp.", "B. thất nghiệp đông, thu nhập thấp, môi trường sống không tốt.", "C. chủ yếu là làm thuê, mức sống thấp, điều kiện sống khá tốt.", "D. thiếu việc làm, dân trí thấp, thu nhập khá tốt và rất ổn định."], ans: 1, explain: "Đô thị hóa tự phát dẫn đến thất nghiệp, đời sống khó khăn và hình thành các khu ổ chuột." },
+            { id: 14, q: "Các quốc gia nào sau đây có quy mô GDP lớn nhất khu vực Mỹ Latinh?", options: ["A. Ac-hen-ti-na và Pêru.", "B. Bra-xin và Mê-hi-cô.", "C. Pa-ra-goay và Bra-xin.", "D. Mê-hi-cô và Chi-lê."], ans: 1, explain: "Bra-xin và Mê-hi-cô là hai nền kinh tế quy mô lớn nhất Mỹ Latinh." },
+            { id: 15, q: "Tài nguyên khoáng sản đa dạng ở khu vực Mỹ Latinh là cơ sở để phát triển ngành nào sau đây?", options: ["A. Công nghiệp dược phẩm.", "B. Công nghiệp luyện kim.", "C. Công nghiệp khai khoáng.", "D. Công nghiệp thực phẩm."], ans: 2, explain: "Khoáng sản đa dạng phong phú là cơ sở phát triển công nghiệp khai khoáng." },
+            { id: 16, q: "Sơn nguyên Bra-xin có nhiều thuận lợi để", options: ["A. trồng cây lâu năm nhiệt đới, chăn nuôi gia cầm, thủy điện.", "B. trồng cây công nghiệp lâu năm, chăn nuôi gia súc, du lịch.", "C. trồng lúa và cây công nghiệp, chăn nuôi bò sữa, thủy điện.", "D. trồng cây công nghiệp hàng năm, khai thác than và du lịch."], ans: 1, explain: "Sơn nguyên Bra-xin có đất đỏ bazan và đồng cỏ rộng thích hợp cho cây công nghiệp lâu năm và chăn nuôi gia súc." },
+            { id: 17, q: "Ý nào sau đây không đúng với an ninh phi truyền thống?", options: ["A. Mới xuất hiện trong vài thập niên gần đây.", "B. Liên quan đến an ninh năng lượng, nguồn nước.", "C. Xuất hiện trong vài thế kỉ gần đây.", "D. Đòi hỏi các nước cần chung tay giải quyết."], ans: 2, explain: "An ninh phi truyền thống mới xuất hiện và chú trọng trong vài thập niên gần đây." },
+            { id: 18, q: "Ý nào sau đây không đúng với vị trí địa lí của khu vực Mỹ La tinh?", options: ["A. Tiếp giáp với Bắc Băng Dương.", "B. Nằm ở bán cầu Tây.", "C. Tiếp giáp Bắc Mỹ.", "D. Tiếp giáp Đại Tây Dương."], ans: 0, explain: "Mỹ Latinh nằm ở bán cầu Tây, không tiếp giáp với Bắc Băng Dương." },
+            { id: 19, q: "Phần lớn lãnh thổ Mỹ La-tinh có khí hậu?", options: ["A. Khí hậu núi cao.", "B. Khí hậu lạnh ẩm.", "C. Khí hậu nhiệt đới.", "D. Khí hậu nóng ẩm."], ans: 3, explain: "Lãnh thổ phần lớn thuộc đới khí hậu xích đạo, cận xích đạo và nhiệt đới nên có tính chất nóng ẩm." },
+            { id: 20, q: "Lĩnh vực nào sau đây thuộc an ninh truyền thống?", options: ["A. Chiến tranh cục bộ.", "B. An ninh kinh tế.", "C. An ninh lương thực.", "D. Biến đổi khí hậu."], ans: 0, explain: "Chiến tranh/xung đột quân sự thuộc phạm trù an ninh truyền thống." },
+            { id: 21, q: "Nhiệm vụ quan trọng nhất của Tổ chức Thương mại thế giới là", options: ["A. duy trì một nền thương mại toàn cầu tự do, thuận lợi, minh bạch.", "B. giải quyết các bất đồng và tranh chấp thương mại giữa các quốc gia.", "C. thúc đẩy hợp tác tiền tệ toàn cầu, đảm bảo sự ổn định tài chính.", "D. hỗ trợ tăng trưởng kinh tế bền vững một số khu vực kém phát triển."], ans: 0, explain: "Nhiệm vụ quan trọng nhất của WTO là duy trì thương mại tự do, minh bạch." },
+            { id: 22, q: "Giám sát hệ thống tài chính toàn cầu là nhiệm vụ chủ yếu của", options: ["A. Ngân hàng Thế giới (WB).", "B. Tổ chức Thương mại Thế giới.", "C. Liên hợp quốc (UN).", "D. Quỹ Tiền tệ quốc tế (IMF)."], ans: 3, explain: "Quỹ Tiền tệ Quốc tế (IMF) đảm nhận việc giám sát hệ thống tài chính toàn cầu." },
+            { id: 23, q: "Bảo đảm một nền hoà bình và trật tự thế giới bền vững là tôn chỉ hoạt động của", options: ["A. Liên hợp quốc.", "B. Ngân hàng Thế giới.", "C. Liên minh châu Âu.", "D. Tổ chức Thương mại Thế giới."], ans: 0, explain: "Mục tiêu tối cao của Liên hợp quốc (UN) là duy trì hòa bình và an ninh quốc tế." },
+            { id: 24, q: "Phía tây của khu vực Mỹ La tinh có địa hình", options: ["A. bao gồm sơn nguyên, vùng núi trẻ An-đét.", "B. bao gồm miền núi thấp, sơn nguyên và đồng bằng.", "C. chủ yếu là các đảo và quần đảo.", "D. chủ yếu là các đồng bằng châu thổ."], ans: 0, explain: "Phía tây nổi bật với dãy núi trẻ An-đét cao, đồ xộ và các sơn nguyên." },
+            { id: 25, q: "Tốc độ tăng GDP của khu vực Mỹ La tinh năm 2020 xuống -6,6% do ảnh hưởng của", options: ["A. xung đột vũ trang trong khu vực.", "B. khủng hoảng kinh tế thế giới.", "C. thiên tai bão lũ và động đất.", "D. dịch bệnh."], ans: 3, explain: "Năm 2020 kinh tế chịu ảnh hưởng nặng nề bởi đại dịch COVID-19." }
+        ];
+
+        const p2Data = [
+            {
+                id: 1,
+                context: "Lãnh thổ Mỹ Latinh rộng lớn và trải dài trên nhiều vĩ độ nên khu vực này có nhiều đới và kiểu khí hậu khác nhau. Đới khí hậu xích đạo và cận xích đạo nằm ở quần đảo Ăng ti, đồng bằng La- nốt và đồng bằng A-ma-dôn với nhiệt độ nóng quanh năm và lượng mưa lớn, thuận lợi cho phát triển nông nghiệp và rừng.",
+                items: [
+                    { key: 'a', text: "Đồng bằng A-ma-dôn chủ yếu thuộc đới khí hậu ôn đới gió mùa.", ans: false, explain: "A-ma-dôn thuộc khí hậu xích đạo và cận xích đạo nóng ẩm." },
+                    { key: 'b', text: "Hoang mạc Atacama là khu vực có khí hậu khô hạn nhất Mỹ Latinh.", ans: true, explain: "Atacama là hoang mạc khô hạn nhất thế giới." },
+                    { key: 'c', text: "Mỹ Latinh phát triển nền nông nghiệp với cơ cấu đa dạng chủ yếu do có nhiều đới và kiểu khí hậu khác nhau.", ans: true, explain: "Khí hậu phân hóa giúp sản phẩm nông nghiệp đa dạng." },
+                    { key: 'd', text: "Lãnh thổ Mỹ Latinh rộng lớn và trải dài trên nhiều vĩ độ nên nhiên thiên có sự phân hoá Bắc - Nam.", ans: true, explain: "Trải dài vĩ độ tạo nên sự phân hóa Bắc - Nam rõ rệt." }
+                ]
+            },
+            {
+                id: 2,
+                context: "Liên hợp quốc (United Nations, viết tắt là UN) ra đời vào ngày 24-10-1945. Đến năm 2020, UN có 193 thành viên. Trụ sở của UN đặt ở Niu - Yoóc (Hoa Kỳ).",
+                items: [
+                    { key: 'a', text: "Liên Hiệp Quốc được thành lập năm 1945.", ans: true, explain: "Ra đời ngày 24/10/1945." },
+                    { key: 'b', text: "Là tổ chức có số lượng thành viên đông nhất.", ans: true, explain: "Gồm 193 quốc gia thành viên." },
+                    { key: 'c', text: "Trụ sở của Liên Hiệp quốc đặt tại Oa-Sinh-Tơn (Hoa Kỳ).", ans: false, explain: "Trụ sở UN đặt tại thành phố New York (Niu-Yoóc)." },
+                    { key: 'd', text: "Mục tiêu chính của Liên hợp quốc là thúc đẩy hợp tác tiền tệ quốc tế và tăng trưởng kinh tế.", ans: false, explain: "Mục tiêu chính là duy trì hòa bình và an ninh thế giới." }
+                ]
+            },
+            {
+                id: 3,
+                context: "Năm 2020, Mỹ Latinh đóng góp khoảng 6% GDP thế giới. GDP của Bra-xin đạt 1.448,6 tỉ USD, Mê-hi-cô đạt 1.090,5 tỉ USD. Tốc độ tăng GDP của khu vực giảm từ 0,7% năm 2019 xuống -6,6% năm 2020. Kinh tế khu vực chịu ảnh hưởng của sự phụ thuộc nước ngoài và bất ổn chính trị, xã hội.",
+                items: [
+                    { key: 'a', text: "GDP của Bra-xin lớn hơn Mê-hi-cô năm 2020.", ans: true, explain: "Bra-xin (1448,6 tỉ USD) > Mê-hi-cô (1090,5 tỉ USD)." },
+                    { key: 'b', text: "Tốc độ tăng GDP của Mỹ Latinh không ổn định.", ans: true, explain: "Tốc độ tăng trưởng biến động mạnh từ 0,7% xuống -6,6%." },
+                    { key: 'c', text: "Sự phụ thuộc nước ngoài góp phần làm GDP khu vực tăng trưởng không ổn định.", ans: true, explain: "Phụ thuộc vào tư bản nước ngoài khiến kinh tế thiếu ổn định." },
+                    { key: 'd', text: "Hội nhập quốc tế khiến kinh tế Mỹ Latinh không thể tăng trưởng.", ans: false, explain: "Hội nhập đem lại cơ hội phát triển; suy giảm do các biến động bất ổn." }
+                ]
+            },
+            {
+                id: 4,
+                context: "Ngành dịch vụ đóng góp nhiều vào GDP và có xu hướng tăng tỉ trọng trong cơ cấu kinh tế Mỹ Latinh. Năm 2020, trị giá xuất khẩu hàng hóa và dịch vụ đạt 1.189,1 tỉ USD, trị giá nhập khẩu hàng hóa và dịch vụ đạt 1.146,5 tỉ USD. Năm 2019, khu vực đón 202 triệu lượt khách du lịch quốc tế, thu về hơn 75,6 tỉ USD.",
+                items: [
+                    { key: 'a', text: "Dịch vụ ngày càng có vai trò quan trọng trong cơ cấu kinh tế Mỹ Latinh.", ans: true, explain: "Tỉ trọng dịch vụ trong GDP có xu hướng tăng." },
+                    { key: 'b', text: "Mỹ Latinh có tiềm năng phát triển du lịch nhờ cảnh quan thiên nhiên đa dạng và nền văn hóa đặc sắc.", ans: true, explain: "Có sức hút du lịch lớn." },
+                    { key: 'c', text: "Năm 2020, Mỹ Latinh xuất siêu hàng hóa và dịch vụ 47 tỉ USD.", ans: false, explain: "Cán cân = Xuất khẩu (1.189,1) - Nhập khẩu (1.146,5) = 42,6 tỉ USD (làm tròn 43 tỉ USD, không phải 47 tỉ USD)." },
+                    { key: 'd', text: "Bình quân mỗi lượt khách du lịch quốc tế đến Mỹ Latinh năm 2019 mang lại hơn 375 USD doanh thu du lịch.", ans: false, explain: "75,6 tỉ USD / 202 triệu lượt = 374,25 USD/lượt (~375 USD)." }
+                ]
+            }
+        ];
+
+        const p3Data = [
+            { id: 1, q: "Năm 2020, khu vực Mỹ La Tinh có diện tích khoảng 20 triệu km², số dân 652,3 triệu người. Tính mật độ dân số khu vực Mỹ La tinh. (Làm tròn kết quả đến hàng đơn vị người/km²)", ans: "33", explain: "Mật độ = 652.300.000 / 20.000.000 = 32,615 người/km² → Làm tròn: 33" },
+            { id: 2, q: "Dựa vào bảng số liệu Tốc độ tăng GDP Mỹ Latinh (2019: 0,7%; 2020: -6,6%), hãy cho biết Tốc độ tăng GDP 2020 giảm bao nhiêu so với năm 2019? (Làm tròn kết quả đến hàng đơn vị của %)", ans: "7", explain: "Mức giảm = 0,7 - (-6,6) = 7,3% → Làm tròn hàng đơn vị: 7" },
+            { id: 3, q: "Dựa vào bảng số liệu, hãy cho biết GDP của Bra-xin vào năm 2020 (1448,6 tỉ USD) gấp bao nhiêu lần so với năm 2000 (655,5 tỉ USD)? (Làm tròn kết quả đến 1 chữ số thập phân)", ans: "2.2", altAns: "2,2", explain: "Gấp = 1448,6 / 655,5 = 2,2099... → Làm tròn 1 chữ số thập phân: 2,2" },
+            { id: 4, q: "Năm 2019: Xuất khẩu = 24 791,1 tỉ USD; Nhập khẩu = 24 348,1 tỉ USD. Tính cán cân thương mại xuất, nhập khẩu hàng hóa và dịch vụ toàn thế giới năm 2019. (Làm tròn đến hàng đơn vị)", ans: "443", explain: "Cán cân = Xuất khẩu - Nhập khẩu = 24 791,1 - 24 348,1 = 443 tỉ USD." },
+            { id: 5, q: "Năm 2020: Xuất khẩu = 22 350,6 tỉ USD; Nhập khẩu = 21 720,7 tỉ USD. Tính tỉ trọng giá trị nhập khẩu hàng hóa và dịch vụ toàn thế giới năm 2020. (Làm tròn đến hàng đơn vị %)", ans: "49", explain: "Tổng XNK = 44 071,3 tỉ USD. Tỉ trọng NK = (21 720,7 / 44 071,3) * 100% = 49,28% → Làm tròn: 49" },
+            { id: 6, q: "Năm 2000: Tổng kim ngạch XNK = 16 038,5 tỉ USD, Cán cân thương mại = 31,1 tỉ USD. Tính giá trị xuất khẩu hàng hóa và dịch vụ toàn thế giới năm 2000. (Làm tròn đến hàng đơn vị)", ans: "8035", explain: "XK = (Tổng + Cán cân) / 2 = (16 038,5 + 31,1) / 2 = 8034,8 tỉ USD → Làm tròn: 8035" },
+            { id: 7, q: "Tổng kim ngạch thương mại của Thái Lan năm 2023 là 1 100 tỉ USD, trong đó 580 tỉ USD là xuất khẩu. Tính tỉ trọng xuất khẩu trong tổng thương mại. (Làm tròn đến chữ số thập phân thứ nhất %)", ans: "52.7", altAns: "52,7", explain: "Tỉ trọng XK = (580 / 1100) * 100% = 52,727...% → Làm tròn: 52,7" }
+        ];
+
+        // RENDER FUNCTIONS
+        function renderQuiz() {
+            // Part 1
+            const p1Container = document.getElementById('part1-questions');
+            p1Container.innerHTML = p1Data.map((item, index) => `
+                <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/50" id="p1-q-${item.id}">
+                    <p class="font-semibold text-slate-800 mb-3"><span class="text-indigo-600">Câu ${item.id}:</span> ${item.q}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        ${item.options.map((opt, optIdx) => `
+                            <label class="flex items-center p-2.5 bg-white border border-slate-200 rounded-lg cursor-pointer hover:bg-indigo-50/50 transition">
+                                <input type="radio" name="p1_q${item.id}" value="${optIdx}" class="text-indigo-600 focus:ring-indigo-500 mr-2">
+                                <span class="text-sm text-slate-700">${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div class="feedback hidden mt-2 text-xs p-2 rounded"></div>
+                </div>
+            `).join('');
+
+            // Part 2
+            const p2Container = document.getElementById('part2-questions');
+            p2Container.innerHTML = p2Data.map((item) => `
+                <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/50" id="p2-q-${item.id}">
+                    <p class="text-xs text-slate-500 bg-slate-200/60 p-2.5 rounded-lg mb-3 font-mono">${item.context}</p>
+                    <p class="font-bold text-slate-800 text-sm mb-2">Câu ${item.id}: Xác định Đúng hoặc Sai cho mỗi ý sau:</p>
+                    <div class="space-y-2">
+                        ${item.items.map((sub) => `
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-2.5 bg-white border border-slate-200 rounded-lg gap-2">
+                                <span class="text-sm text-slate-700 font-medium">${sub.key}) ${sub.text}</span>
+                                <div class="flex items-center gap-4 shrink-0">
+                                    <label class="inline-flex items-center text-sm cursor-pointer">
+                                        <input type="radio" name="p2_q${item.id}_${sub.key}" value="true" class="text-indigo-600 focus:ring-indigo-500 mr-1"> Đúng
+                                    </label>
+                                    <label class="inline-flex items-center text-sm cursor-pointer">
+                                        <input type="radio" name="p2_q${item.id}_${sub.key}" value="false" class="text-indigo-600 focus:ring-indigo-500 mr-1"> Sai
+                                    </label>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="feedback hidden mt-2 text-xs p-2 rounded"></div>
+                </div>
+            `).join('');
+
+            // Part 3
+            const p3Container = document.getElementById('part3-questions');
+            p3Container.innerHTML = p3Data.map((item) => `
+                <div class="p-4 rounded-xl border border-slate-100 bg-slate-50/50" id="p3-q-${item.id}">
+                    <p class="font-semibold text-slate-800 mb-2"><span class="text-indigo-600">Câu ${item.id}:</span> ${item.q}</p>
+                    <div class="flex items-center gap-3">
+                        <input type="text" id="p3_answer_${item.id}" placeholder="Nhập đáp số..." class="w-48 px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                    </div>
+                    <div class="feedback hidden mt-2 text-xs p-2 rounded"></div>
+                </div>
+            `).join('');
+        }
+
+        function renderKeys() {
+            const container = document.getElementById('detailed-keys-container');
+            let html = '';
+
+            // P1 Keys
+            html += `<h3 class="font-bold text-indigo-800 text-md border-l-4 border-indigo-600 pl-2">PHẦN I. TRẮC NGHIỆM NHIỀU PHƯƠNG ÁN</h3><div class="grid grid-cols-1 gap-3">`;
+            p1Data.forEach(item => {
+                const optLetter = ["A", "B", "C", "D"][item.ans];
+                html += `
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <p class="text-sm font-semibold text-slate-800">Câu ${item.id}: Đáp án <span class="text-indigo-600 font-bold">${optLetter}</span></p>
+                        <p class="text-xs text-slate-600 mt-1"><i class="fa-solid fa-circle-info text-indigo-400 mr-1"></i>${item.explain}</p>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+
+            // P2 Keys
+            html += `<h3 class="font-bold text-indigo-800 text-md border-l-4 border-indigo-600 pl-2 mt-6">PHẦN II. TRẮC NGHIỆM ĐÚNG / SAI</h3><div class="space-y-4">`;
+            p2Data.forEach(item => {
+                html += `
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <p class="text-sm font-semibold text-slate-800 mb-1">Câu ${item.id}:</p>
+                        <ul class="space-y-1 text-xs">
+                            ${item.items.map(sub => `
+                                <li class="flex items-start gap-1">
+                                    <span class="font-bold ${sub.ans ? 'text-emerald-600' : 'text-rose-600'}">[${sub.ans ? 'ĐÚNG' : 'SAI'}]</span>
+                                    <span><b>${sub.key})</b> ${sub.text} - <i>${sub.explain}</i></span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+
+            // P3 Keys
+            html += `<h3 class="font-bold text-indigo-800 text-md border-l-4 border-indigo-600 pl-2 mt-6">PHẦN III. CÂU TRẢ LỜI NGẮN</h3><div class="grid grid-cols-1 gap-3">`;
+            p3Data.forEach(item => {
+                html += `
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <p class="text-sm font-semibold text-slate-800">Câu ${item.id}: Kết quả = <span class="text-indigo-600 font-bold">${item.ans}</span></p>
+                        <p class="text-xs text-slate-600 mt-1"><i class="fa-solid fa-calculator text-indigo-400 mr-1"></i>${item.explain}</p>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+
+            container.innerHTML = html;
+        }
+
+        // GRADING LOGIC (THPT QG Style Standardized Scaling)
+        function gradeQuiz() {
+            let p1Score = 0; // max 25 items -> 0.25 pt each = 6.25 pts (standard scaled)
+            let p2Score = 0; // 4 questions: 1 sub correct=0.1, 2 sub=0.25, 3 sub=0.5, 4 sub=1.0 -> max 4.0
+            let p3Score = 0; // 7 questions -> 0.25 pt each = 1.75 pts
+            
+            let totalCorrectCount = 0;
+
+            // Grade Part 1
+            p1Data.forEach(item => {
+                const selected = document.querySelector(`input[name="p1_q${item.id}"]:checked`);
+                const card = document.getElementById(`p1-q-${item.id}`);
+                const feedback = card.querySelector('.feedback');
+                feedback.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+                if (selected && parseInt(selected.value) === item.ans) {
+                    p1Score += 0.25;
+                    totalCorrectCount++;
+                    feedback.classList.add('bg-emerald-100', 'text-emerald-800');
+                    feedback.innerHTML = `<i class="fa-solid fa-check mr-1"></i>Đúng! ${item.explain}`;
+                } else {
+                    feedback.classList.add('bg-rose-100', 'text-rose-800');
+                    const correctOpt = ["A", "B", "C", "D"][item.ans];
+                    feedback.innerHTML = `<i class="fa-solid fa-xmark mr-1"></i>Chưa chính xác. Đáp án đúng là <b>${correctOpt}</b>. ${item.explain}`;
+                }
+            });
+
+            // Grade Part 2
+            p2Data.forEach(item => {
+                let correctSubs = 0;
+                item.items.forEach(sub => {
+                    const selected = document.querySelector(`input[name="p2_q${item.id}_${sub.key}"]:checked`);
+                    if (selected && (selected.value === 'true') === sub.ans) {
+                        correctSubs++;
+                    }
+                });
+
+                // Standard scoring scheme for True/False
+                let qScore = 0;
+                if (correctSubs === 1) qScore = 0.1;
+                else if (correctSubs === 2) qScore = 0.25;
+                else if (correctSubs === 3) qScore = 0.5;
+                else if (correctSubs === 4) qScore = 1.0;
+
+                p2Score += qScore;
+                totalCorrectCount += correctSubs;
+
+                const card = document.getElementById(`p2-q-${item.id}`);
+                const feedback = card.querySelector('.feedback');
+                feedback.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+                if (correctSubs === 4) {
+                    feedback.classList.add('bg-emerald-100', 'text-emerald-800');
+                    feedback.innerHTML = `<i class="fa-solid fa-check mr-1"></i>Xuất sắc! Đúng cả 4/4 ý (+1.0 điểm).`;
+                } else {
+                    feedback.classList.add('bg-rose-100', 'text-rose-800');
+                    feedback.innerHTML = `<i class="fa-solid fa-circle-info mr-1"></i>Đúng ${correctSubs}/4 ý (+${qScore} điểm). Xem phần Đáp án để xem chi tiết từng ý.`;
+                }
+            });
+
+            // Grade Part 3
+            p3Data.forEach(item => {
+                const input = document.getElementById(`p3_answer_${item.id}`);
+                const userAns = input ? input.value.trim().replace(',', '.') : '';
+                const card = document.getElementById(`p3-q-${item.id}`);
+                const feedback = card.querySelector('.feedback');
+                feedback.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+
+                const isCorrect = userAns === item.ans || (item.altAns && userAns === item.altAns.replace(',', '.'));
+
+                if (isCorrect) {
+                    p3Score += 0.25;
+                    totalCorrectCount++;
+                    feedback.classList.add('bg-emerald-100', 'text-emerald-800');
+                    feedback.innerHTML = `<i class="fa-solid fa-check mr-1"></i>Chính xác! ${item.explain}`;
+                } else {
+                    feedback.classList.add('bg-rose-100', 'text-rose-800');
+                    feedback.innerHTML = `<i class="fa-solid fa-xmark mr-1"></i>Chưa chính xác. Đáp số đúng là <b>${item.ans}</b>. ${item.explain}`;
+                }
+            });
+
+            // Calculate overall scaled score to 10
+            // Raw total max points = 6.25 + 4.0 + 1.75 = 12.0 -> scaled proportionately to 10
+            const totalRaw = p1Score + p2Score + p3Score;
+            const finalScore = ((totalRaw / 12.0) * 10).toFixed(1);
+
+            // Show Score Summary
+            const scoreBox = document.getElementById('score-summary');
+            scoreBox.classList.remove('hidden');
+            document.getElementById('total-score').innerText = finalScore;
+            document.getElementById('correct-count').innerText = `${totalCorrectCount}/48 ý`;
+
+            let feedbackMsg = "Cố gắng hơn ở lần sau nhé!";
+            if (finalScore >= 8.5) feedbackMsg = "Xuất sắc! Bạn nắm vững kiến thức rất tốt.";
+            else if (finalScore >= 6.5) feedbackMsg = "Khá tốt! Hãy rà soát lại các câu làm sai.";
+            else if (finalScore >= 5.0) feedbackMsg = "Đạt yêu cầu. Cần ôn tập lại các công thức và số liệu!";
+            document.getElementById('feedback-text').innerText = feedbackMsg;
+
+            // Scroll to top to see results
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // TAB SWITCHING
+        function switchTab(tab) {
+            const quizTab = document.getElementById('tab-quiz');
+            const keysTab = document.getElementById('tab-keys');
+            const btnQuiz = document.getElementById('btn-quiz-mode');
+            const btnKeys = document.getElementById('btn-keys-mode');
+
+            if (tab === 'quiz') {
+                quizTab.classList.remove('hidden');
+                keysTab.classList.add('hidden');
+                btnQuiz.className = "px-3 py-1.5 rounded-lg text-sm font-medium transition bg-white text-indigo-700 shadow";
+                btnKeys.className = "px-3 py-1.5 rounded-lg text-sm font-medium transition bg-indigo-800 hover:bg-indigo-600 text-white";
+            } else {
+                quizTab.classList.add('hidden');
+                keysTab.classList.remove('hidden');
+                btnKeys.className = "px-3 py-1.5 rounded-lg text-sm font-medium transition bg-white text-indigo-700 shadow";
+                btnQuiz.className = "px-3 py-1.5 rounded-lg text-sm font-medium transition bg-indigo-800 hover:bg-indigo-600 text-white";
+            }
+        }
+
+        // INIT
+        window.onload = function() {
+            renderQuiz();
+            renderKeys();
+        };
+    </script>
+</body>
+</html>
